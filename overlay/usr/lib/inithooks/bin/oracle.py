@@ -8,10 +8,7 @@ Option:
 import sys
 import getopt
 
-#import bcrypt
-
 from dialog_wrapper import Dialog
-#from executil import ExecError, system
 
 def usage(s=None):
     if s:
@@ -41,28 +38,6 @@ def main():
             "Oracle XE SYS Password",
             "Enter new password for the Oracle XE SYS-user.")
 
-    # if not email:
-    #     if 'd' not in locals():
-    #         d = Dialog('TurnKey Linux - First boot configuration')
-
-    #     email = d.get_email(
-    #         "GitLab Email",
-    #         "Enter email address for the GitLab 'admin' account.",
-    #         "admin@example.com")
-
-    # if not domain:
-    #     if 'd' not in locals():
-    #         d = Dialog('TurnKey Linux - First boot configuration')
-
-    #     domain = d.get_input(
-    #         "GitLab Domain",
-    #         "Enter the domain to serve GitLab.",
-    #         DEFAULT_DOMAIN)
-
-    # if domain == "DEFAULT":
-    #     domain = DEFAULT_DOMAIN
-
-    #%(dbpassword)s
     with open("/root/oracle.rsp", "w") as text_file:
         text_file.write("""###############################################################################
 #                                                                             #
@@ -109,27 +84,6 @@ ORACLE_CONFIRM_PASSWORD=%(dbpassword)s
 ###############################################################################
 ORACLE_DBENABLE=y
 """ % {'dbpassword': dbpassword})
-
-    # salt = bcrypt.gensalt(10)
-    # hash = bcrypt.hashpw(password, salt)
-
-    # m = MySQL()
-    # m.execute('UPDATE gitlab_production.users SET email=\"%s\" WHERE username=\"admin\";' % email)
-    # m.execute('UPDATE gitlab_production.users SET encrypted_password=\"%s\" WHERE username=\"admin\";' % hash)
-
-    # config = "/home/git/gitlab/config/gitlab.yml"
-    # system("sed -i \"s|host:.*|host: %s|\" %s" % (domain, config))
-    # system("sed -i \"s|email_from:.*|email_from: %s|\" %s" % (email, config))
-
-    # system_github("git config --global user.email %s" % email)
-    # system_github("bundle exec rake gitlab:env:info RAILS_ENV=production")
-
-    # # restart gitlab if its running
-    # try:
-    #     system("/etc/init.d/gitlab status")
-    #     system("/etc/init.d/gitlab restart")
-    # except ExecError:
-    #     pass
 
 if __name__ == "__main__":
     main()
