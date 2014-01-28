@@ -5,10 +5,3 @@
 # Set Oracle XE SYS password
 $INITHOOKS_PATH/bin/oracle.py --dbpass="$DB_PASS"
 
-# Install Oracle XE
-dpkg --install $ORACLE_PACKAGE
-rm $ORACLE_PACKAGE
-
-# Configure Oracle
-/etc/init.d/shm_load start
-/etc/init.d/oracle-ce configure responseFile=~/oracle.rsp >> ~/oracle-install.log

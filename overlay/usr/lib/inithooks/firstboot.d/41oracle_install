@@ -1,0 +1,15 @@
+#!/bin/bash -e
+
+ORACLE_PACKAGE=/root/oracle-xe_11.2.0-2_amd64.deb
+
+# Install Oracle XE
+echo "Installing Oracle..."
+dpkg --install $ORACLE_PACKAGE >> /root/oracle-install.log
+rm $ORACLE_PACKAGE
+
+# Configure Oracle
+echo "Configuring Oracle..."
+/etc/init.d/shm_load start
+/etc/init.d/oracle-xe configure responseFile=/root/oracle.rsp >> /root/oracle-install.log
+echo "Oracle is ready"
+
