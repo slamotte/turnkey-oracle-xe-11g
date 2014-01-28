@@ -61,7 +61,7 @@ Unzip it and convert to a Debian package like so:
     alien --scripts Disk1/oracle-xe-11.2.0-1.0.x86_64.rpm
 
 Copy the resultant deb (e.g. oracle-xe_11.2.0-2_amd64.deb) to overlay/root/ and
-update the constant at the top of /overlay/usr/lib/inithooks/41oracle accordingly.
+update the constant at the top of /overlay/usr/lib/inithooks/firstboot.d/41oracle accordingly.
 Then build your ISO:
 
 ::
