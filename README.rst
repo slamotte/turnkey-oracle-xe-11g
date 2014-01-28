@@ -33,93 +33,47 @@ Resources
 - `Oracle 11g AMM: MEMORY_TARGET, MEMORY_MAX_TARGET and /dev/shm <http://blog.oracle48.nl/oracle-11g-amm-memory_target-memory_max_target-and-dev_shm/>`_
 - `VirtualBox <https://www.virtualbox.org/>`_
 
-VirtualBox Setup
+Virtual Machine Setup
 --------------------------------------------------
 
-If you don't know yet how to setup VirtualBox please check TurnKey's `Appliance
-installation tutorial with VirtualBox
-<http://www.turnkeylinux.org/docs/installation-appliances-virtualbox>`_.
-
-Set the following appliance specific values when creating a new VirtualBox
-virtual machine:
+Set the following parameters for the new virtual machine:
 
 - Memory: 2GB
-
-- Disk size: 21GB (there will be 16GB free space after installation)
-
-- Network adapter: Bridged
+- Disk size: 20GB (there will be 16GB free space after installation)
+- Network adapter: Bridged (so you can access it from anywhere on your network)
 
 If you need more disk space just increase the disk size as much as you like.
 
 2GB memory is probably too much as according to Oracle documents XE uses 1 GB
-at maximum. But OTOH 2GB RAM creates 2045MB swap that fullfills Oracle swap
+at maximum. But OTOH 2GB RAM creates enough swap to fullfill Oracle's swap
 requirement.
 
-How to install Oracle XE
+How to build your ISO
 --------------------------------------------------
 
-First get the zipped Oracle XE RPM package from `Oracle site <http://www.oracle.com/technetwork/products/express-edition/downloads/index.html>`_ and upload it to
-a virtual machine.
-
-Downloading the package requires an account to Oracle site and accepting a license.
- 
-Log in to the virtual machine as root and run the following commands:
-
-0. Unzip:
+First get the zipped Oracle XE RPM package from `Oracle site <http://www.oracle.com/technetwork/products/express-edition/downloads/index.html>`.
+Unzip it and convert to a Debian package like so:
 
 ::
 
     unzip oracle-xe-11.2.0-1.0.x86_64.rpm.zip
-
-1. Convert RPM to a debian package:
-
-::
-
     alien --scripts Disk1/oracle-xe-11.2.0-1.0.x86_64.rpm
 
-2. Install:
+Copy the resultant deb (e.g. oracle-xe_11.2.0-2_amd64.deb) to overlay/root/ and
+update the constant at the top of /overlay/usr/lib/inithooks/41oracle accordingly.
+Then build your ISO:
 
 ::
 
-    dpkg --install oracle-xe_11.2.0-2_amd64.deb
+    make
 
-3. Run some other modifications needed by Oracle:
-
-::
-
-    /etc/init.d/shm_load start
-
-4. Configure Oracle:
+That's it. Set your new VM to boot from this ISO and after a couple minutes you'll
+have a fully-functioning Oracle XE instance. From an external machine you can log
+in using sqlplus:
 
 ::
 
-    /etc/init.d/oracle-xe configure responseFile=oracle.rsp >> oracle-install.log
-
-That's it ! Now Oracle is running:
-
-::
-
-    root@turnkey-oracle-xe-11g ~# $ORACLE_HOME/bin/sqlplus sys/<PASSWORD> as sysdba
-    
-    SQL*Plus: Release 11.2.0.2.0 Production on Sun Aug 4 19:21:29 2013
-    
-    Copyright (c) 1982, 2011, Oracle.  All rights reserved.
-    
-    
-    Connected to:
-    Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
-    
-    SQL> select * from v$version;
-    
-    BANNER
-    --------------------------------------------------------------------------------
-    Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
-    PL/SQL Release 11.2.0.2.0 - Production
-    CORE	11.2.0.2.0	Production
-    TNS for Linux: Version 11.2.0.2.0 - Production
-    NLSRTL Version 11.2.0.2.0 - Production
-    
-    SQL> 
+    sqlplus system/password@ipaddress/xe
 
 Create an Oracle user account:
 
