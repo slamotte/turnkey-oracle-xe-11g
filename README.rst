@@ -51,7 +51,8 @@ requirement.
 How to build your ISO
 --------------------------------------------------
 
-First get the zipped Oracle XE RPM package from `Oracle site <http://www.oracle.com/technetwork/products/express-edition/downloads/index.html>`.
+First download the zipped `Oracle XE RPM package from Oracle <http://www.oracle.com/technetwork/products/express-edition/downloads/index.html>`_
+
 Unzip it and convert to a Debian package like so:
 
 ::
